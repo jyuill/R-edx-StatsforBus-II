@@ -141,7 +141,7 @@ par(mfrow=c(1,1))
 
 boxplot(MonthlyCloses$Housing,
         horizontal=TRUE,
-        main="Housing stock movement",
+        main="Housing stock box",
         col="orange")
         
 # Uncomment these lines to get the
