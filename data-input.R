@@ -14,7 +14,7 @@ setwd(directory) # set working directory to where file is
 MonthlyCloses <- read.csv("MonthlyCloses.csv", header=TRUE) # get file from working directory 
 
 # Much simpler options:
-# use file.choose to grab the file directly from your system
+# use file.choose to grab the file directly from your system (could be anywhere, but is in '/data' folder)
 MonthlyCloses <- read.csv(file.choose(), header=TRUE)
 # or if you know the file location on the Internet, you can grab directly
 MonthlyCloses <- read.csv("https://courses.edx.org/asset-v1:IIMBx+QM101.2x+2T2016+type@asset+block/MonthlyCloses.csv", header=TRUE)
