@@ -20,8 +20,11 @@ library(lubridate)
 # and select More > Set working directory
 
 # Read the closing prices into a variable
-MonthlyCloses <- read.csv("MonthlyCloses.csv", 
+MonthlyCloses <- read.csv("data/MonthlyCloses.csv", 
                           header=TRUE)
+summary(MonthlyCloses)
+str(MonthlyCloses)
+MonthlyCloses[,1] # jy: month col has formatting that is confusing R over place of year
 
 # Dimensions of the dataset
 numDays <- nrow(MonthlyCloses)
@@ -33,10 +36,12 @@ numStocks <- ncol(MonthlyCloses) - 1
 # their intended formats
 
 # Explicitly declare the formats of the columns
-# Month field is alpha
+# Month field is alpha 
 MonthlyCloses[ , 1] <- as.character(MonthlyCloses[ , 1])
+str(MonthlyCloses)
+MonthlyCloses$Month # jy: shows that this doesn't create consistent format
 
-# Prices are numeric
+# Prices are numeric ::: jy: this doesn't seem necessary? already numeric
 for(i in 2:numStocks + 1) {
   MonthlyCloses[ , i] <- as.numeric(MonthlyCloses[ , i])
 }
@@ -49,9 +54,13 @@ for(i in 2:numStocks + 1) {
 MonthlyCloses$Month <- sapply(MonthlyCloses$Month,
                               function(month) 
                                 paste("01-",month, sep=""))
+MonthlyCloses$Month # jy: still doesn't create consistent format
 
 MonthlyCloses$Month <- as.Date(MonthlyCloses$Month,
                                "%d-%b-%y")
+MonthlyCloses[,1] # nope - most rows show up as NA
+
+MthlyCloses <- MonthlyCloses[1:72,] # remove NA values - probably better ways
 
 # If you encounter an error message, 
 # then you must set the Working Directory.
@@ -59,13 +68,13 @@ MonthlyCloses$Month <- as.Date(MonthlyCloses$Month,
 # to the file MonthlyCloses.csv
 # and select More > Set working directory
 
-# Let's attach a TradingMonth column to our dataset
-MonthlyCloses$TradingMonth <- months(MonthlyCloses$Month)
+# Let's attach a TradingMonth column to our dataset ::jy: separate mth from yr
+MthlyCloses$TradingMonth <- months(MthlyCloses$Month)
 
 # Obtain month-wise averages by grouping closed
 # across the years
 monthlyAverage <- aggregate(FMCG ~ TradingMonth,
-                            MonthlyCloses,
+                            MthlyCloses,
                             mean) 
 # You may change the mean to 
 # some other centrality measure
@@ -90,7 +99,7 @@ pie(monthlyAverage$FMCG,
 
 # Scatter plot of two stocks in the
 # Software sector
-with(MonthlyCloses,
+with(MthlyCloses,
      plot(Software1, Software2,
           main="Tale of two Software stocks",
           xlab="Price of Software1 Stock", 
