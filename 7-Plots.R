@@ -42,9 +42,9 @@ str(MonthlyCloses)
 MonthlyCloses$Month # jy: shows that this doesn't create consistent format
 
 # Prices are numeric ::: jy: this doesn't seem necessary? already numeric
-for(i in 2:numStocks + 1) {
-  MonthlyCloses[ , i] <- as.numeric(MonthlyCloses[ , i])
-}
+#for(i in 2:numStocks + 1) {
+#  MonthlyCloses[ , i] <- as.numeric(MonthlyCloses[ , i])
+#}
 
 # Prepare the Month field, so it can be converted
 # to a Date field. You don't have to understand
@@ -109,13 +109,13 @@ with(MthlyCloses,
 
 # Next, get a line chart for both
 # Determine the range for the y axis
-maxVal <- max(max(MonthlyCloses$Software1),
-              max(MonthlyCloses$Software2))
-minVal <- min(min(MonthlyCloses$Software1),
-              min(MonthlyCloses$Software2))
+maxVal <- max(max(MthlyCloses$Software1),
+              max(MthlyCloses$Software2))
+minVal <- min(min(MthlyCloses$Software1),
+              min(MthlyCloses$Software2))
 
-plot(MonthlyCloses$Software1 ~ 
-       MonthlyCloses$Month,
+plot(MthlyCloses$Software1 ~ 
+       MthlyCloses$Month,
      type="l",
      lwd=2,
      col="navy",
@@ -128,8 +128,8 @@ plot(MonthlyCloses$Software1 ~
 # overlap of the second plot
 par(new=TRUE)
 
-plot(MonthlyCloses$Software2 ~ 
-       MonthlyCloses$Month,
+plot(MthlyCloses$Software2 ~ 
+       MthlyCloses$Month,
      type="l",
      lwd=2,
      ann=FALSE,
@@ -139,28 +139,33 @@ plot(MonthlyCloses$Software2 ~
 # Box plot
 par(mfrow=c(1,1))
 
-boxplot(MonthlyCloses$Housing,
+
+boxplot(MthlyCloses$Housing,
         horizontal=TRUE,
         main="Housing stock box",
         col="orange")
         
 # Uncomment these lines to get the
 # full picture for every stock
-
+# jy: set up grid to compare all stocks in same window
+par(mfrow=c(3,4))
 # # Plot the time series for each stock
-# for(symbol in 2:numStocks + 1) {
+
+# jy: 'symbol' can be any variable
+# jy: ignore first col (dates) and use ts to supply dates for each row
+for(symbol in 2:numStocks + 1) {
 #   
 #   # The ts function of R helps us to
-#   # construct a time series
-#   plot(ts(MonthlyCloses[ , symbol],
-#           start=c(1995, 1), end=c(2014, 12),
-#           frequency=12),
-#        main=paste("Monthly Movements for:", 
-#                   colnames(MonthlyCloses)[symbol]),
-#        xlab="Year", ylab="Stock Price in INR",
-#        col="navy")
-#   
-# }
+#   # construct a time series - jy: ignore month col and use ts to create dates
+   plot(ts(MonthlyCloses[ , symbol],
+           start=c(1995, 1), end=c(2014, 12),
+           frequency=12),
+        main=paste("Monthly Movements for:", 
+                   colnames(MonthlyCloses)[symbol]),
+        xlab="Year", ylab="Stock Price in INR",
+        col="navy")
+   
+ }
 # 
 # 
 # 
